@@ -20,12 +20,15 @@ EVDEV_KEY_MAPPING = {
     evdev.ecodes.KEY_0: "0",
 }
 
+
 def _get_parser():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("--server", default=f"ws://{WS_HOST}:{WS_PORT}", help="ProfileSwitcher server URI")
 
     parser.add_argument("--db", required=True, type=Path, help="Path to the database with cards to profiles mapping")
-    parser.add_argument("--device", required=True, help="Path to the HID device. Stable paths from /dev/input/by-id/... are recommended")
+    parser.add_argument(
+        "--device", required=True, help="Path to the HID device. Stable paths from /dev/input/by-id/... are recommended"
+    )
 
     parser.add_argument("player_number", choices=(0, 1), type=int, help="Target player number")
 

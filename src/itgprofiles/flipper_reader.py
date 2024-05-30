@@ -18,7 +18,7 @@ def get_card_id(s: str):
         line = line.strip()
         if line.startswith(CARD_TYPE):
             hex_string = line[-8:]
-            return f'{int(hex_string, 16):010}'
+            return f"{int(hex_string, 16):010}"
     return None
 
 
