@@ -1,15 +1,7 @@
 import argparse
-import asyncio
-import websockets
 
 from itgprofiles.consts import WS_HOST, WS_PORT
-
-
-async def set_profile(url, player_index, profile_index):
-    async with websockets.connect(url) as websocket:
-        message = f"{player_index}:{profile_index}"
-        await websocket.send(message)
-        print(f"Sent message: {message}")
+from itgprofiles.lib import set_player_profile
 
 
 def _get_parser():
@@ -24,7 +16,8 @@ def _get_parser():
 def main():
     parser = _get_parser()
     args = parser.parse_args()
-    asyncio.run(set_profile(args.server, args.player_number, args.profile_index))
+
+    set_player_profile(args.server, args.player_number, args.profile_index)
 
 
 if __name__ == "__main__":
