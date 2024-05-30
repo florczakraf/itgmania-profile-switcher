@@ -2,12 +2,15 @@
 name = "itgmania-profile-switcher"
 version = "0.1.0"
 description = "A set of tools for managing ITGmania player profiles from outside of the game."
-authors = ["Rafał Florczak <florczak.raf+boogiestats@gmail.com>"]
+authors = ["Rafał Florczak <florczak.raf+itgm@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 packages = [
     { from = "src", include = "itgprofiles" },
 ]
+
+[tool.poetry.scripts]
+itgprofiles-cli = "itgprofiles.cli:main"
 
 [tool.poetry.dependencies]
 python = "^3.12"
