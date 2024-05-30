@@ -1,6 +1,9 @@
-local ws = nil
+local SERVER_URL = "ws://localhost:5555/"
 
 local function Log(message, loggingMethod)
+    -- Use this function for prefixed logging within the module.
+    -- Known logging methods: Trace (default), Warn, SM
+
     loggingMethod = loggingMethod or Trace
 
     loggingMethod("ProfileSwitcher: " .. message)
@@ -31,8 +34,9 @@ local function ProfileSwitchActor(params)
     }
 end
 
+local ws = nil
 ws = NETWORK:WebSocket{
-    url="ws://localhost:5555/",
+    url=SERVER_URL,
     pingInterval=30,
     automaticReconnect=true,
     onMessage=function(msg)
@@ -41,7 +45,7 @@ ws = NETWORK:WebSocket{
 			ws:Send("hello from itgmania")
             Log("Connected")
         elseif msgType == "Close" then
-            Log("Dsiconnected")
+            Log("Disconnected")
         elseif msgType == "Error" then
             Log("Error")
         elseif msgType == "Message" then
@@ -55,7 +59,6 @@ ws = NETWORK:WebSocket{
             Log("Swapping profile for player " .. playerNumber .. " to " .. profileIndex)
             SetLocalProfile(tonumber(playerNumber), tonumber(profileIndex))
         end
-
     end,
 }
 
