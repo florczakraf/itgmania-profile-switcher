@@ -29,13 +29,13 @@ end
 local function ProfileSwitchActor(params)
     return Def.ActorFrame{
         Def.Quad{
-            InitCommand=function(self)
-                self:align(0, 0)
-                self:diffuse(color("#00000000"))
-            end,
-            ResizeCommand=function(self)
-                self:zoomto(0, 0)
-            end,
+            ModuleCommand=function(self)
+                -- Uncomment and modify the following commands to load some
+                -- default profiles on every song wheel load:
+
+                -- SetLocalProfile(0, 0)
+                -- SetLocalProfile(1, 1)
+            end
         },
     }
 end
