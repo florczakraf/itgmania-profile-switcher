@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "itgmania-profile-switcher"
+version = "0.1.0"
+description = "A set of tools for managing ITGmania player profiles from outside of the game."
+authors = ["Rafał Florczak <florczak.raf+boogiestats@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [
+    { from = "src", include = "itgprofiles" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+websockets = "^12.0"
+pyserial = "^3.5"
+pexpect-serial = "0.1.0"
+pexpect = "^4.9.0"
+evdev = "^1.7.1"
+
+[tool.poetry.group.dev.dependencies]
+black = "24.4.2"
+flake8 = "^7.0.0"
+pdbp = "^1.5.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 120
