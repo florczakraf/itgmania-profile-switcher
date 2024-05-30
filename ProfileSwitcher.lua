@@ -11,6 +11,12 @@ end
 
 local function SetLocalProfile(playerNumber, profileIndex)
     local topscreen = SCREENMAN:GetTopScreen()
+
+    if topscreen == nil then  -- happens on startup
+        Log("topscreen not available yet")
+        return
+
+    end
     if type(topscreen["SetLocalProfile"]) == "function" then
 		local resp = topscreen:SetLocalProfile(playerNumber, profileIndex)
 		Log("SetLocalProfile returned: " .. resp)
