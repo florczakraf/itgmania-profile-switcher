@@ -51,7 +51,7 @@ ws = NETWORK:WebSocket{
             ws:Send("hello from itgmania")
             Log("Connected")
         elseif msgType == "Close" then
-            Log("Disconnected")
+            -- log here crashes on game shutdown because of mutex in RageLog so we don't have it anymore
         elseif msgType == "Error" then
             Log("Error")
         elseif msgType == "Message" then
