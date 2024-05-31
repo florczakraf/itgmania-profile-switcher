@@ -18,11 +18,11 @@ local function SetLocalProfile(playerNumber, profileIndex)
 
     end
     if type(topscreen["SetLocalProfile"]) == "function" then
-		local resp = topscreen:SetLocalProfile(playerNumber, profileIndex)
-		Log("SetLocalProfile returned: " .. resp)
-	else
-		Log("This screen doesn't support profile hot swapping.", Warn)
-	end
+        local resp = topscreen:SetLocalProfile(playerNumber, profileIndex)
+        Log("SetLocalProfile returned: " .. resp)
+    else
+        Log("This screen doesn't support profile hot swapping.", Warn)
+    end
 
 end
 
@@ -48,19 +48,19 @@ ws = NETWORK:WebSocket{
     onMessage=function(msg)
         local msgType = ToEnumShortString(msg.type)
         if msgType == "Open" then
-			ws:Send("hello from itgmania")
+            ws:Send("hello from itgmania")
             Log("Connected")
         elseif msgType == "Close" then
             Log("Disconnected")
         elseif msgType == "Error" then
             Log("Error")
         elseif msgType == "Message" then
-			Log("Received message: " .. msg.data)
+            Log("Received message: " .. msg.data)
             local playerNumber, profileIndex = string.match(msg.data, "(%d+):(%d+)")
-			if playerNumber == nil or profileIndex == nil then
+            if playerNumber == nil or profileIndex == nil then
                 Log("playerNumber (" .. tostring(playerNumber) .. ") or profileIndex (" .. tostring(profileIndex) .. ") is undefined", Warn)
-				return
-			end
+                return
+            end
 
             Log("Swapping profile for player " .. playerNumber .. " to " .. profileIndex)
             SetLocalProfile(tonumber(playerNumber), tonumber(profileIndex))
