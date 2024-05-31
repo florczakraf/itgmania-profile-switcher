@@ -1,31 +1,53 @@
+import argparse
 import asyncio
 import websockets
 
-address, port = "localhost", 5555
-connected_clients = set()
+from itgprofiles.consts import WS_HOST, WS_PORT
 
 
-async def broadcast(message):
-    if connected_clients:
-        await asyncio.wait([asyncio.create_task(client.send(message)) for client in connected_clients])
+class BroadcastingServer:
+    def __init__(self, host, port):
+        self._host = host
+        self._port = port
+        self._connected_clients = set()
+
+    async def run(self):
+        return await websockets.serve(self._handler, self._host, self._port)
+
+    async def _handler(self, websocket: websockets.WebSocketServerProtocol, _):
+        self._connected_clients.add(websocket)
+        try:
+            async for message in websocket:
+                print(f"[{websocket.server_header} - {websocket.remote_address}] Received message: {message}")
+                websockets.broadcast(self._connected_clients, message)
+        except websockets.exceptions.ConnectionClosed as e:
+            print(f"Client disconnected: {e}")
+        finally:
+            self._connected_clients.remove(websocket)
+            print(f"removed {websocket}")
 
 
-async def handler(websocket, path):
-    connected_clients.add(websocket)
-    try:
-        async for message in websocket:
-            print(f"Received message: {message}")
-            await broadcast(message)
-    except websockets.exceptions.ConnectionClosed as e:
-        print(f"Client disconnected: {e}")
-    finally:
-        connected_clients.remove(websocket)
+
+def _get_parser():
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument("--host", default=WS_HOST, help="Host to bind the server to")
+    parser.add_argument("--port", type=int, default=WS_PORT, help="Port to bind the server to")
+
+    return parser
 
 
-async def main():
-    start_server = await websockets.serve(handler, address, port)
-    print(f"WebSocket server started on ws://{address}:{port}")
-    await start_server.wait_closed()
+async def _inner_main(args):
+    server = BroadcastingServer(args.host, args.port)
+    server_loop = await server.run()
+    print(f"Profile Switcher WebSocket server started on ws://{args.host}:{args.port}")
+    await server_loop.wait_closed()
 
 
-asyncio.run(main())
+def main():
+    parser = _get_parser()
+    args = parser.parse_args()
+    asyncio.run(_inner_main(args))
+
+
+if __name__ == "__main__":
+    main()

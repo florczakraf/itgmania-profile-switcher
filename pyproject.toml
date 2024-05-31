@@ -13,6 +13,7 @@ packages = [
 itgprofiles-cli = "itgprofiles.cli:main"
 itgprofiles-flipper-reader = "itgprofiles.flipper_reader:main"
 itgprofiles-hid-reader = "itgprofiles.hid_reader:main"
+itgprofiles-server = "itgprofiles.server:main"
 
 [tool.poetry.dependencies]
 python = "^3.12"
